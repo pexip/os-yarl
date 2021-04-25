@@ -1,0 +1,5 @@
+0001-do-not-add-changelog-to-long-description.patch
+0002-docs-disable-intersphinx.patch
+0003-docs-disable-sidebar_collapse-option.patch
+0004-disable-privacy-breach-links-in-documentation.patch
+fix-986525

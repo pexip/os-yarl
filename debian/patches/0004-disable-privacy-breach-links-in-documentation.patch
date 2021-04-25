@@ -1,0 +1,46 @@
+From: =?utf-8?q?Piotr_O=C5=BCarowski?= <piotr@debian.org>
+Date: Tue, 20 Jun 2017 20:13:42 +0200
+Subject: disable privacy breach links in documentation
+
+---
+ docs/_templates/about.html |  3 +--
+ docs/conf.py               | 12 ++++++------
+ 2 files changed, 7 insertions(+), 8 deletions(-)
+
+diff --git a/docs/_templates/about.html b/docs/_templates/about.html
+index 4186727..df44705 100644
+--- a/docs/_templates/about.html
++++ b/docs/_templates/about.html
+@@ -2,7 +2,6 @@
+ 
+ <p>
+     <a class="badge" href="https://dev.azure.com/aio-libs/yarl">
+-        <img alt="https://dev.azure.com/aio-libs/yarl/_apis/build/status/CI?branchName=master"
+-            src="https://dev.azure.com/aio-libs/yarl/_apis/build/status/CI?branchName=master" />
++        https://dev.azure.com/aio-libs/yarl/_apis/build/status/CI?branchName=master
+     </a>
+ </p>
+\ No newline at end of file
+diff --git a/docs/conf.py b/docs/conf.py
+index 438568b..90ee8c3 100644
+--- a/docs/conf.py
++++ b/docs/conf.py
+@@ -161,12 +161,12 @@ html_theme = 'alabaster'
+ html_theme_options = {
+     'logo': 'yarl-icon-128x128.png',
+     'description': 'Yet another URL library',
+-    'github_user': 'aio-libs',
+-    'github_repo': 'yarl',
+-    'github_button': True,
+-    'github_type': 'star',
+-    'github_banner': True,
+-    'codecov_button': True,
++    # 'github_user': 'aio-libs',
++    # 'github_repo': 'yarl',
++    # 'github_button': True,
++    # 'github_type': 'star',
++    # 'github_banner': True,
++    # 'codecov_button': True,
+     'pre_bg': '#FFF6E5',
+     'note_bg': '#E5ECD1',
+     'note_border': '#BFCF8C',

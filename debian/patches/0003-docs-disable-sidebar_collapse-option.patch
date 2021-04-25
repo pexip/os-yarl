@@ -1,0 +1,22 @@
+From: =?utf-8?q?Piotr_O=C5=BCarowski?= <ozarow@gmail.com>
+Date: Sun, 6 Nov 2016 22:14:54 +0100
+Subject: docs: disable sidebar_collapse option
+
+theme packaged in Debian doesn't have this option
+---
+ docs/conf.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/docs/conf.py b/docs/conf.py
+index 50c0639..438568b 100644
+--- a/docs/conf.py
++++ b/docs/conf.py
+@@ -173,7 +173,7 @@ html_theme_options = {
+     'body_text': '#482C0A',
+     'sidebar_text': '#49443E',
+     'sidebar_header': '#4B4032',
+-    'sidebar_collapse': False,
++    #'sidebar_collapse': False,
+ }
+ 
+ # Theme options are theme-specific and customize the look and feel of a theme

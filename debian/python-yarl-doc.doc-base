@@ -1,0 +1,9 @@
+Document: python-yarl-doc
+Title: Yet another URL library documentation
+Author: Andrew Svetlov and aio-libs team
+Abstract: Sphinx documentation for Yet another URL library
+Section: Programming/Python
+
+Format: HTML
+Index: /usr/share/doc/python-yarl-doc/html/index.html
+Files: /usr/share/doc/python-yarl-doc/html/*
