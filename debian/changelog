@@ -1,3 +1,9 @@
+yarl (1.6.3-2pexip1) pexip; urgency=medium
+
+  * Prepare Pexip packaging
+
+ -- Huw Jones <huw@pexip.com>  Tue, 25 May 2021 12:44:09 +0100
+
 yarl (1.6.3-2) unstable; urgency=medium
 
   [ Sandro Tosi ]
