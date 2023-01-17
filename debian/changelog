@@ -1,3 +1,43 @@
+yarl (1.8.2-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Piotr Ożarowski <piotr@debian.org>  Tue, 17 Jan 2023 20:02:27 +0100
+
+yarl (1.8.1-2) unstable; urgency=medium
+
+  * Team Upload.
+  * Cherry-pick upstream commit to fix FTBFS
+    Closes: #1026634
+
+ -- Nilesh Patra <nilesh@debian.org>  Sun, 15 Jan 2023 00:22:45 +0530
+
+yarl (1.8.1-1) unstable; urgency=medium
+
+  [ Debian Janitor ]
+  * Bump debhelper from old 12 to 13.
+  * Update standards version to 4.6.1, no changes needed.
+
+  [ Piotr Ożarowski ]
+  * New upstream release
+
+ -- Piotr Ożarowski <piotr@debian.org>  Mon, 07 Nov 2022 15:27:39 +0100
+
+yarl (1.7.2-1) unstable; urgency=medium
+
+  [ Debian Janitor ]
+  * Remove constraints unnecessary since buster:
+    + Build-Depends: Drop versioned constraint on dh-python.
+  * Remove constraints unnecessary since buster:
+    + Build-Depends: Drop versioned constraint on python3-idna,
+      python3-multidict and python3-sphinx.
+
+  [ Piotr Ożarowski ]
+  * New upstream release
+  * Patches updated, fix-986525 removed (no longer needed)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Mon, 14 Feb 2022 15:24:18 +0100
+
 yarl (1.6.3-2) unstable; urgency=medium
 
   [ Sandro Tosi ]

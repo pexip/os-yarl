@@ -14,6 +14,78 @@ Changelog
 
 .. towncrier release notes start
 
+1.8.2 (2022-12-03)
+==================
+
+This is the first release that started shipping wheels for Python 3.11.
+
+
+1.8.1 (2022-08-01)
+==================
+
+Misc
+----
+
+- `#694 <https://github.com/aio-libs/yarl/issues/694>`_, `#699 <https://github.com/aio-libs/yarl/issues/699>`_, `#700 <https://github.com/aio-libs/yarl/issues/700>`_, `#701 <https://github.com/aio-libs/yarl/issues/701>`_, `#702 <https://github.com/aio-libs/yarl/issues/702>`_, `#703 <https://github.com/aio-libs/yarl/issues/703>`_, `#739 <https://github.com/aio-libs/yarl/issues/739>`_
+
+
+1.8.0 (2022-08-01)
+==================
+
+Features
+--------
+
+- Added ``URL.raw_suffix``, ``URL.suffix``, ``URL.raw_suffixes``, ``URL.suffixes``, ``URL.with_suffix``. (`#613 <https://github.com/aio-libs/yarl/issues/613>`_)
+
+
+Improved Documentation
+----------------------
+
+- Fixed broken internal references to :meth:`~URL.human_repr`. (`#665 <https://github.com/aio-libs/yarl/issues/665>`_)
+- Fixed broken external references to :doc:`multidict:index` docs. (`#665 <https://github.com/aio-libs/yarl/issues/665>`_)
+
+
+Deprecations and Removals
+-------------------------
+
+- Dropped Python 3.6 support. (`#672 <https://github.com/aio-libs/yarl/issues/672>`_)
+
+
+Misc
+----
+
+- `#646 <https://github.com/aio-libs/yarl/issues/646>`_, `#699 <https://github.com/aio-libs/yarl/issues/699>`_, `#701 <https://github.com/aio-libs/yarl/issues/701>`_
+
+
+1.7.2 (2021-11-01)
+==================
+
+Bugfixes
+--------
+
+- Changed call in ``with_port()`` to stop reencoding parts of the URL that were already encoded. (`#623 <https://github.com/aio-libs/yarl/issues/623>`_)
+
+
+1.7.1 (2021-10-07)
+==================
+
+Bugfixes
+--------
+
+- Fix 1.7.0 build error
+
+1.7.0 (2021-10-06)
+==================
+
+Features
+--------
+
+- Add `__bytes__()` magic method so that `bytes(url)` will work and use optimal ASCII encoding. (`#582 <https://github.com/aio-libs/yarl/issues/582>`_)
+- Started shipping platform-specific arm64 wheels for Apple Silicon. (`#622 <https://github.com/aio-libs/yarl/issues/622>`_)
+- Started shipping platform-specific wheels with the ``musl`` tag targeting typical Alpine Linux runtimes. (`#622 <https://github.com/aio-libs/yarl/issues/622>`_)
+- Added support for Python 3.10. (`#622 <https://github.com/aio-libs/yarl/issues/622>`_)
+
+
 1.6.3 (2020-11-14)
 ==================
 
@@ -212,7 +284,7 @@ Features
 
 * Add ``URL.explicit_port`` property (#218)
 
-* Give a friendlier error when port cant be converted to int (#168)
+* Give a friendlier error when port can't be converted to int (#168)
 
 * ``bool(URL())`` now returns ``False`` (#272)
 
@@ -256,7 +328,7 @@ Features
 1.1.1 (2018-02-17)
 ==================
 
-* Fix performance regression: don't encode enmpty netloc (#170)
+* Fix performance regression: don't encode empty netloc (#170)
 
 1.1.0 (2018-01-21)
 ==================

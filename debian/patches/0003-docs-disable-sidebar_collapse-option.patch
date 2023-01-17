@@ -8,15 +8,15 @@ theme packaged in Debian doesn't have this option
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/docs/conf.py b/docs/conf.py
-index 50c0639..438568b 100644
+index d7154ce..86a3961 100644
 --- a/docs/conf.py
 +++ b/docs/conf.py
-@@ -173,7 +173,7 @@ html_theme_options = {
-     'body_text': '#482C0A',
-     'sidebar_text': '#49443E',
-     'sidebar_header': '#4B4032',
--    'sidebar_collapse': False,
-+    #'sidebar_collapse': False,
+@@ -177,7 +177,7 @@ html_theme_options = {
+     "body_text": "#482C0A",
+     "sidebar_text": "#49443E",
+     "sidebar_header": "#4B4032",
+-    "sidebar_collapse": False,
++    # "sidebar_collapse": False,
  }
  
  # Theme options are theme-specific and customize the look and feel of a theme

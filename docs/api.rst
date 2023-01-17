@@ -7,7 +7,7 @@ Public API
 .. currentmodule:: yarl
 
 
-The only public *yarl* class is ``URL``:
+The only public *yarl* class is :class:`URL`:
 
 .. doctest::
 
@@ -66,7 +66,7 @@ Already encoded URL is not changed:
    >>> URL('http://xn--jxagkqfkduily1i.eu')
    URL('http://xn--jxagkqfkduily1i.eu')
 
-Use :meth:`URL.human_repr` for getting human readable representation:
+Use :meth:`~URL.human_repr` for getting human readable representation:
 
 .. doctest::
 
@@ -101,7 +101,7 @@ There are two kinds of properties: *decoded* and *encoded* (with
 .. attribute:: URL.scheme
 
    Scheme for absolute URLs, empty string for relative URLs or URLs
-   starting with `'//'` (:ref:`yarl-api-relative-urls`).
+   starting with ``'//'`` (:ref:`yarl-api-relative-urls`).
 
    .. doctest::
 
@@ -398,6 +398,50 @@ For *path* and *query* *yarl* supports additional helpers:
       >>> URL('http://example.com/путь/сюда').raw_name
       '%D1%81%D1%8E%D0%B4%D0%B0'
 
+.. attribute:: URL.suffix
+
+   The file extension of :attr:`name`.
+
+   .. doctest::
+
+      >>> URL('http://example.com/path/to.txt').suffix
+      '.txt'
+      >>> URL('http://example.com/путь.сюда').suffix
+      '.сюда'
+      >>> URL('http://example.com/path').suffix
+      ''
+
+.. attribute:: URL.raw_suffix
+
+   The file extension of :attr:`raw_name`.
+
+   .. doctest::
+
+      >>> URL('http://example.com/путь.сюда').raw_suffix
+      '.%D1%81%D1%8E%D0%B4%D0%B0'
+
+.. attribute:: URL.suffixes
+
+   A list of :attr:`name`'s file extensions.
+
+   .. doctest::
+
+      >>> URL('http://example.com/path/to.tar.gz').suffixes
+      ('.tar', '.gz')
+      >>> URL('http://example.com/путь.тут.да').suffixes
+      ('.тут', '.да')
+      >>> URL('http://example.com/path').suffixes
+      ()
+
+.. attribute:: URL.raw_suffixes
+
+   A list of :attr:`raw_name`'s file extensions.
+
+   .. doctest::
+
+      >>> URL('http://example.com/путь.тут.да').raw_suffixes
+      ('.%D1%82%D1%83%D1%82', '.%D0%B4%D0%B0')
+
 
 .. attribute:: URL.query
 
@@ -431,7 +475,7 @@ Absolute URL should start from either *scheme* or ``'//'``.
     A check for absolute URLs.
 
     Return ``True`` for absolute ones (having *scheme* or starting
-    with ``//``), ``False`` otherwise.
+    with ``'//'``), ``False`` otherwise.
 
    .. doctest::
 
@@ -449,11 +493,12 @@ New URL generation
 ------------------
 
 URL is an immutable object, every operation described in the
-section generates a new *URL* instance.
+section generates a new :class:`URL` instance.
 
 .. method:: URL.build(*, scheme=..., authority=..., user=..., password=..., \
-                      host=..., port=..., path=..., query=.., \
+                      host=..., port=..., path=..., query=..., \
                       query_string=..., fragment=..., encoded=False)
+   :classmethod:
 
    Creates and returns a new URL:
 
@@ -616,7 +661,7 @@ section generates a new *URL* instance.
    completely.
 
 
-   Returned ``URL`` object will contain query string which updated
+   Returned :class:`URL` object will contain query string which updated
    parts from passed query parts (or parts of parsed query string).
 
    Accepts any :class:`~collections.abc.Mapping` (e.g. :class:`dict`,
@@ -710,6 +755,20 @@ section generates a new *URL* instance.
       >>> URL('http://example.com/path/to').with_name('имя')
       URL('http://example.com/path/%D0%B8%D0%BC%D1%8F')
 
+.. method:: URL.with_suffix(suffix)
+
+   Return a new URL with *suffix* (file extension of *name*) replaced and
+   cleaned up *query* and *fragment* parts.
+
+   Name is encoded if needed.
+
+   .. doctest::
+
+      >>> URL('http://example.com/path/to?arg#frag').with_suffix('.doc')
+      URL('http://example.com/path/to.doc')
+      >>> URL('http://example.com/path/to').with_suffix('.cуффикс')
+      URL('http://example.com/path/to.c%D1%83%D1%84%D1%84%D0%B8%D0%BA%D1%81')
+
 .. attribute:: URL.parent
 
    A new URL with last part of *path* removed and
@@ -791,7 +850,7 @@ All URL data is stored in encoded form internally. It's pretty good
 for passing ``str(url)`` everywhere URL string is accepted but quite
 bad for memorizing by humans.
 
-.. method:: human_repr()
+.. method:: URL.human_repr()
 
    Return decoded human readable string for URL representation.
 
