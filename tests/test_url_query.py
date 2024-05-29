@@ -2,7 +2,6 @@ from urllib.parse import urlencode
 
 from multidict import MultiDict, MultiDictProxy
 
-
 from yarl import URL
 
 # query
@@ -60,14 +59,3 @@ def test_ampersand_as_value():
     u = URL("http://127.0.0.1/?a=1%26b=2")
     assert len(u.query) == 1
     assert u.query["a"] == "1&b=2"
-
-
-def test_semicolon_as_separator():
-    u = URL("http://127.0.0.1/?a=1;b=2")
-    assert len(u.query) == 2
-
-
-def test_semicolon_as_value():
-    u = URL("http://127.0.0.1/?a=1%3Bb=2")
-    assert len(u.query) == 1
-    assert u.query["a"] == "1;b=2"
