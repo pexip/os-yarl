@@ -13,7 +13,6 @@ docs/make.bat
 docs/spelling_wordlist.txt
 docs/yarl-icon-128x128.xcf
 docs/_static/yarl-icon-128x128.png
-docs/_templates/about.html
 tests/test_cache.py
 tests/test_cached_property.py
 tests/test_normalize_path.py
