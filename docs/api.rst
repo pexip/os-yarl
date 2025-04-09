@@ -54,8 +54,8 @@ But for *non-ascii* case *encoding* is applied.
 
 .. doctest::
 
-   >>> str(URL('http://εμπορικόσήμα.eu/путь/這裡'))
-   'http://xn--jxagkqfkduily1i.eu/%D0%BF%D1%83%D1%82%D1%8C/%E9%80%99%E8%A3%A1'
+   >>> str(URL('http://εμπορικόσήμα.eu/шлях/這裡'))
+   'http://xn--jxagkqfkduily1i.eu/%D1%88%D0%BB%D1%8F%D1%85/%E9%80%99%E8%A3%A1'
 
 The same is true for *user*, *password*, *query* and *fragment* parts of URL.
 
@@ -70,11 +70,11 @@ Use :meth:`~URL.human_repr` for getting human readable representation:
 
 .. doctest::
 
-   >>> url = URL('http://εμπορικόσήμα.eu/путь/這裡')
+   >>> url = URL('http://εμπορικόσήμα.eu/шлях/這裡')
    >>> str(url)
-   'http://xn--jxagkqfkduily1i.eu/%D0%BF%D1%83%D1%82%D1%8C/%E9%80%99%E8%A3%A1'
+   'http://xn--jxagkqfkduily1i.eu/%D1%88%D0%BB%D1%8F%D1%85/%E9%80%99%E8%A3%A1'
    >>> url.human_repr()
-   'http://εμπορικόσήμα.eu/путь/這裡'
+   'http://εμπορικόσήμα.eu/шлях/這裡'
 
 
 .. note::
@@ -120,8 +120,8 @@ There are two kinds of properties: *decoded* and *encoded* (with
 
       >>> URL('http://john@example.com').user
       'john'
-      >>> URL('http://андрей@example.com').user
-      'андрей'
+      >>> URL('http://бажан@example.com').user
+      'бажан'
       >>> URL('http://example.com').user is None
       True
 
@@ -133,8 +133,8 @@ There are two kinds of properties: *decoded* and *encoded* (with
 
    .. doctest::
 
-      >>> URL('http://андрей@example.com').raw_user
-      '%D0%B0%D0%BD%D0%B4%D1%80%D0%B5%D0%B9'
+      >>> URL('http://довбуш@example.com').raw_user
+      '%D0%B4%D0%BE%D0%B2%D0%B1%D1%83%D1%88'
       >>> URL('http://example.com').raw_user is None
       True
 
@@ -147,7 +147,7 @@ There are two kinds of properties: *decoded* and *encoded* (with
 
       >>> URL('http://john:pass@example.com').password
       'pass'
-      >>> URL('http://андрей:пароль@example.com').password
+      >>> URL('http://степан:пароль@example.com').password
       'пароль'
       >>> URL('http://example.com').password is None
       True
@@ -191,7 +191,45 @@ There are two kinds of properties: *decoded* and *encoded* (with
 
       >>> URL('http://хост.домен').raw_host
       'xn--n1agdj.xn--d1acufc'
+      >>> URL('http://[::1]').raw_host
+      '::1'
 
+.. attribute:: URL.host_subcomponent
+
+   :rfc:`3986#section-3.2.2` host subcomponent part of URL, ``None`` for relative URLs
+   (:ref:`yarl-api-relative-urls`).
+
+   .. doctest::
+
+      >>> URL('http://хост.домен').host_subcomponent
+      'xn--n1agdj.xn--d1acufc'
+      >>> URL('http://[::1]').host_subcomponent
+      '[::1]'
+
+   .. versionadded:: 1.13
+
+.. attribute:: URL.host_port_subcomponent
+
+   :rfc:`3986#section-3.2.2` host and :rfc:`3986#section-3.2.3` port subcomponent part of URL, ``None`` for relative URLs
+   (:ref:`yarl-api-relative-urls`).
+
+   Trailing dots are stripped from the host to ensure
+   this value can be used for an HTTP Host header.
+
+   The port is omitted if it is the default port for the scheme.
+
+   .. doctest::
+
+      >>> URL('http://хост.домен:81').host_port_subcomponent
+      'xn--n1agdj.xn--d1acufc:81'
+      >>> URL('https://[::1]:8443').host_port_subcomponent
+      '[::1]:8443'
+      >>> URL('http://example.com./').host_port_subcomponent
+      'example.com'
+      >>> URL('http://[::1]').host_port_subcomponent
+      '[::1]'
+
+   .. versionadded:: 1.17
 
 .. attribute:: URL.port
 
@@ -265,11 +303,30 @@ There are two kinds of properties: *decoded* and *encoded* (with
 
       >>> URL('http://example.com/path/to').path
       '/path/to'
-      >>> URL('http://example.com/путь/сюда').path
-      '/путь/сюда'
+      >>> URL('http://example.com/шлях/сюди').path
+      '/шлях/сюди'
       >>> URL('http://example.com').path
       '/'
 
+   .. warning::
+
+      In many situations it is important to distinguish between path separators
+      (a literal ``/``) and other forward slashes (a literal ``%2F``). Use
+      :attr:`URL.path_safe` for these cases.
+
+.. attribute:: URL.path_safe
+
+   Similar to :attr:`URL.path` except it doesn't decode ``%2F`` or ``%25``.
+   This allows to distinguish between path separators (``/``) and encoded
+   slashes (``%2F``).
+
+   Note that ``%25`` is also not decoded to avoid issues with double unquoting
+   of values. e.g. You can unquote the value with
+   ``URL.path_safe.replace("%2F", "/").replace("%25", %")`` to get the same
+   result as :meth:`URL.path`. If the ``%25`` was unquoted, it would be
+   impossible to tell the difference between ``%2F`` and ``%252F``.
+
+   .. versionadded:: 1.12
 
 .. attribute:: URL.path_qs
 
@@ -287,8 +344,8 @@ There are two kinds of properties: *decoded* and *encoded* (with
 
    .. doctest::
 
-      >>> URL('http://example.com/путь/сюда?ключ=знач').raw_path_qs
-      '/%D0%BF%D1%83%D1%82%D1%8C/%D1%81%D1%8E%D0%B4%D0%B0?%D0%BA%D0%BB%D1%8E%D1%87=%D0%B7%D0%BD%D0%B0%D1%87'
+      >>> URL('http://example.com/шлях/сюди?ключ=знач').raw_path_qs
+      '/%D1%88%D0%BB%D1%8F%D1%85/%D1%81%D1%8E%D0%B4%D0%B8?%D0%BA%D0%BB%D1%8E%D1%87=%D0%B7%D0%BD%D0%B0%D1%87'
 
    .. versionadded:: 0.15
 
@@ -298,8 +355,8 @@ There are two kinds of properties: *decoded* and *encoded* (with
 
    .. doctest::
 
-      >>> URL('http://example.com/путь/сюда').raw_path
-      '/%D0%BF%D1%83%D1%82%D1%8C/%D1%81%D1%8E%D0%B4%D0%B0'
+      >>> URL('http://example.com/шлях/сюди').raw_path
+      '/%D1%88%D0%BB%D1%8F%D1%85/%D1%81%D1%8E%D0%B4%D0%B8'
 
 
 .. attribute:: URL.query_string
@@ -333,8 +390,8 @@ There are two kinds of properties: *decoded* and *encoded* (with
 
       >>> URL('http://example.com/path#fragment').fragment
       'fragment'
-      >>> URL('http://example.com/path#якорь').fragment
-      'якорь'
+      >>> URL('http://example.com/path#якір').fragment
+      'якір'
       >>> URL('http://example.com/path').fragment
       ''
 
@@ -344,8 +401,8 @@ There are two kinds of properties: *decoded* and *encoded* (with
 
    .. doctest::
 
-      >>> URL('http://example.com/path#якорь').raw_fragment
-      '%D1%8F%D0%BA%D0%BE%D1%80%D1%8C'
+      >>> URL('http://example.com/path#якір').raw_fragment
+      '%D1%8F%D0%BA%D1%96%D1%80'
 
 
 
@@ -361,8 +418,8 @@ For *path* and *query* *yarl* supports additional helpers:
 
       >>> URL('http://example.com/path/to').parts
       ('/', 'path', 'to')
-      >>> URL('http://example.com/путь/сюда').parts
-      ('/', 'путь', 'сюда')
+      >>> URL('http://example.com/шлях/сюди').parts
+      ('/', 'шлях', 'сюди')
       >>> URL('http://example.com').parts
       ('/',)
 
@@ -373,8 +430,8 @@ For *path* and *query* *yarl* supports additional helpers:
 
    .. doctest::
 
-      >>> URL('http://example.com/путь/сюда').raw_parts
-      ('/', '%D0%BF%D1%83%D1%82%D1%8C', '%D1%81%D1%8E%D0%B4%D0%B0')
+      >>> URL('http://example.com/шлях/сюди').raw_parts
+      ('/', '%D1%88%D0%BB%D1%8F%D1%85', '%D1%81%D1%8E%D0%B4%D0%B8')
 
 .. attribute:: URL.name
 
@@ -384,8 +441,8 @@ For *path* and *query* *yarl* supports additional helpers:
 
       >>> URL('http://example.com/path/to').name
       'to'
-      >>> URL('http://example.com/путь/сюда').name
-      'сюда'
+      >>> URL('http://example.com/шлях/сюди').name
+      'сюди'
       >>> URL('http://example.com/path/').name
       ''
 
@@ -395,8 +452,8 @@ For *path* and *query* *yarl* supports additional helpers:
 
    .. doctest::
 
-      >>> URL('http://example.com/путь/сюда').raw_name
-      '%D1%81%D1%8E%D0%B4%D0%B0'
+      >>> URL('http://example.com/шлях/сюди').raw_name
+      '%D1%81%D1%8E%D0%B4%D0%B8'
 
 .. attribute:: URL.suffix
 
@@ -406,8 +463,8 @@ For *path* and *query* *yarl* supports additional helpers:
 
       >>> URL('http://example.com/path/to.txt').suffix
       '.txt'
-      >>> URL('http://example.com/путь.сюда').suffix
-      '.сюда'
+      >>> URL('http://example.com/шлях.сюди').suffix
+      '.сюди'
       >>> URL('http://example.com/path').suffix
       ''
 
@@ -417,8 +474,8 @@ For *path* and *query* *yarl* supports additional helpers:
 
    .. doctest::
 
-      >>> URL('http://example.com/путь.сюда').raw_suffix
-      '.%D1%81%D1%8E%D0%B4%D0%B0'
+      >>> URL('http://example.com/шлях.сюди').raw_suffix
+      '.%D1%81%D1%8E%D0%B4%D0%B8'
 
 .. attribute:: URL.suffixes
 
@@ -428,8 +485,8 @@ For *path* and *query* *yarl* supports additional helpers:
 
       >>> URL('http://example.com/path/to.tar.gz').suffixes
       ('.tar', '.gz')
-      >>> URL('http://example.com/путь.тут.да').suffixes
-      ('.тут', '.да')
+      >>> URL('http://example.com/шлях.тут.ось').suffixes
+      ('.тут', '.ось')
       >>> URL('http://example.com/path').suffixes
       ()
 
@@ -439,8 +496,8 @@ For *path* and *query* *yarl* supports additional helpers:
 
    .. doctest::
 
-      >>> URL('http://example.com/путь.тут.да').raw_suffixes
-      ('.%D1%82%D1%83%D1%82', '.%D0%B4%D0%B0')
+      >>> URL('http://example.com/шлях.тут.ось').raw_suffixes
+      ('.%D1%82%D1%83%D1%82', '.%D0%BE%D1%81%D1%8C')
 
 
 .. attribute:: URL.query
@@ -470,7 +527,7 @@ The module supports both absolute and relative URLs.
 Absolute URL should start from either *scheme* or ``'//'``.
 
 
-.. method:: URL.is_absolute()
+.. attribute:: URL.absolute
 
     A check for absolute URLs.
 
@@ -479,14 +536,18 @@ Absolute URL should start from either *scheme* or ``'//'``.
 
    .. doctest::
 
-      >>> URL('http://example.com').is_absolute()
+      >>> URL('http://example.com').absolute
       True
-      >>> URL('//example.com').is_absolute()
+      >>> URL('//example.com').absolute
       True
-      >>> URL('/path/to').is_absolute()
+      >>> URL('/path/to').absolute
       False
-      >>> URL('path').is_absolute()
+      >>> URL('path').absolute
       False
+
+   .. versionchanged:: 1.9.10
+
+      The :attr:`~yarl.URL.absolute` property is preferred over the ``is_absolute()`` method.
 
 
 New URL generation
@@ -533,6 +594,9 @@ section generates a new :class:`URL` instance.
       >>> URL('http://example.com').with_scheme('https')
       URL('https://example.com')
 
+   Returned URL may have a *different* ``port``
+   (:ref:`default port substitution <yarl-api-default-ports>`).
+
 .. method:: URL.with_user(user)
 
    Return a new URL with *user* replaced, auto-encode *user* if needed.
@@ -543,8 +607,8 @@ section generates a new :class:`URL` instance.
 
       >>> URL('http://user:pass@example.com').with_user('new_user')
       URL('http://new_user:pass@example.com')
-      >>> URL('http://user:pass@example.com').with_user('вася')
-      URL('http://%D0%B2%D0%B0%D1%81%D1%8F:pass@example.com')
+      >>> URL('http://user:pass@example.com').with_user('олекса')
+      URL('http://%D0%BE%D0%BB%D0%B5%D0%BA%D1%81%D0%B0:pass@example.com')
       >>> URL('http://user:pass@example.com').with_user(None)
       URL('http://example.com')
 
@@ -588,9 +652,15 @@ section generates a new :class:`URL` instance.
       >>> URL('http://example.com:8888').with_port(None)
       URL('http://example.com')
 
-.. method:: URL.with_path(path)
+.. method:: URL.with_path(path, *, keep_query=False, keep_fragment=False)
 
    Return a new URL with *path* replaced, encode *path* if needed.
+
+   If ``keep_query=True`` or ``keep_fragment=True`` it retains the existing query or fragment in the URL.
+
+   .. versionchanged:: 1.18
+
+      Added *keep_query* and *keep_fragment* parameters.
 
    .. doctest::
 
@@ -651,6 +721,48 @@ section generates a new :class:`URL` instance.
 
       Support subclasses of :class:`int` (except :class:`bool`) and :class:`float`
       as a query parameter value.
+
+.. method:: URL.extend_query(query)
+            URL.extend_query(**kwargs)
+
+   Returns a new URL with *query* part extended.
+
+   Unlike :meth:`update_query`, this method keeps duplicate keys.
+
+   Returned :class:`URL` object will contain query string which extends
+   parts from passed query parts (or parts of parsed query string).
+
+   Accepts any :class:`~collections.abc.Mapping` (e.g. :class:`dict`,
+   :class:`~multidict.MultiDict` instances) or :class:`str`,
+   auto-encode the argument if needed.
+
+   A sequence of ``(key, value)`` pairs is supported as well.
+
+   Also it can take an arbitrary number of keyword arguments.
+
+   Returns the same :class:`URL` if *query* of ``None`` is passed.
+
+   .. note::
+
+      The library accepts :class:`str`, :class:`float`, :class:`int` and their
+      subclasses except :class:`bool` as query argument values.
+
+      If a mapping such as :class:`dict` is used, the values may also be
+      :class:`list` or :class:`tuple` to represent a key has many values.
+
+      Please see :ref:`yarl-bools-support` for the reason why :class:`bool` is not
+      supported out-of-the-box.
+
+   .. doctest::
+
+      >>> URL('http://example.com/path?a=b&b=1').extend_query(b='2')
+      URL('http://example.com/path?a=b&b=1&b=2')
+      >>> URL('http://example.com/path?a=b&b=1').extend_query([('b', '2')])
+      URL('http://example.com/path?a=b&b=1&b=2')
+      >>> URL('http://example.com/path?a=b&c=e&c=f').extend_query(c='d')
+      URL('http://example.com/path?a=b&c=e&c=f&c=d')
+
+   .. versionadded:: 1.11.0
 
 .. method:: URL.update_query(query)
             URL.update_query(**kwargs)
@@ -726,6 +838,16 @@ section generates a new :class:`URL` instance.
       Support subclasses of :class:`int` (except :class:`bool`) and :class:`float`
       as a query parameter value.
 
+.. method:: URL.without_query_params(*query_params)
+
+   Return a new URL whose *query* part does not contain specified ``query_params``.
+
+   Accepts :class:`str` for ``query_params``.
+
+   It does nothing if none of specified ``query_params`` are present in the query.
+
+   .. versionadded:: 1.10.0
+
 .. method:: URL.with_fragment(fragment)
 
    Return a new URL with *fragment* replaced, auto-encode *fragment* if needed.
@@ -736,38 +858,50 @@ section generates a new :class:`URL` instance.
 
       >>> URL('http://example.com/path#frag').with_fragment('anchor')
       URL('http://example.com/path#anchor')
-      >>> URL('http://example.com/path#frag').with_fragment('якорь')
-      URL('http://example.com/path#%D1%8F%D0%BA%D0%BE%D1%80%D1%8C')
+      >>> URL('http://example.com/path#frag').with_fragment('якір')
+      URL('http://example.com/path#%D1%8F%D0%BA%D1%96%D1%80')
       >>> URL('http://example.com/path#frag').with_fragment(None)
       URL('http://example.com/path')
 
-.. method:: URL.with_name(name)
+.. method:: URL.with_name(name, *, keep_query=False, keep_fragment=False)
 
    Return a new URL with *name* (last part of *path*) replaced and
    cleaned up *query* and *fragment* parts.
 
    Name is encoded if needed.
 
+   If ``keep_query=True`` or ``keep_fragment=True`` it retains the existing query or fragment in the URL.
+
+   .. versionchanged:: 1.18
+
+      Added *keep_query* and *keep_fragment* parameters.
+
    .. doctest::
 
       >>> URL('http://example.com/path/to?arg#frag').with_name('new')
       URL('http://example.com/path/new')
-      >>> URL('http://example.com/path/to').with_name('имя')
-      URL('http://example.com/path/%D0%B8%D0%BC%D1%8F')
+      >>> URL('http://example.com/path/to').with_name("ім'я")
+      URL('http://example.com/path/%D1%96%D0%BC%27%D1%8F')
 
-.. method:: URL.with_suffix(suffix)
+.. method:: URL.with_suffix(suffix, *, keep_query=False, keep_fragment=False)
 
    Return a new URL with *suffix* (file extension of *name*) replaced and
    cleaned up *query* and *fragment* parts.
 
    Name is encoded if needed.
 
+   If ``keep_query=True`` or ``keep_fragment=True`` it retains the existing query or fragment in the URL.
+
+   .. versionchanged:: 1.18
+
+      Added *keep_query* and *keep_fragment* parameters.
+
    .. doctest::
 
       >>> URL('http://example.com/path/to?arg#frag').with_suffix('.doc')
       URL('http://example.com/path/to.doc')
-      >>> URL('http://example.com/path/to').with_suffix('.cуффикс')
-      URL('http://example.com/path/to.c%D1%83%D1%84%D1%84%D0%B8%D0%BA%D1%81')
+      >>> URL('http://example.com/path/to').with_suffix('.cуфікс')
+      URL('http://example.com/path/to.c%D1%83%D1%84%D1%96%D0%BA%D1%81')
 
 .. attribute:: URL.parent
 
@@ -813,9 +947,47 @@ The path is encoded if needed.
       URL('http://example.com/path/to/subpath')
       >>> url.parts
       ('/', 'path', 'to', 'subpath')
-      >>> url = URL('http://example.com/path?arg#frag') / 'сюда'
+      >>> url = URL('http://example.com/path?arg#frag') / 'сюди'
       >>> url
-      URL('http://example.com/path/%D1%81%D1%8E%D0%B4%D0%B0')
+      URL('http://example.com/path/%D1%81%D1%8E%D0%B4%D0%B8')
+
+.. method:: URL.joinpath(*other, encoded=False)
+
+   Construct a new URL by with all ``other`` elements appended to
+   *path*, and cleaned up *query* and *fragment* parts.
+
+   Passing ``encoded=True`` parameter prevents path element auto-encoding, the caller is
+   responsible for taking care of URL correctness.
+
+   .. doctest::
+
+      >>> url = URL('http://example.com/path?arg#frag').joinpath('to', 'subpath')
+      >>> url
+      URL('http://example.com/path/to/subpath')
+      >>> url.parts
+      ('/', 'path', 'to', 'subpath')
+      >>> url = URL('http://example.com/path?arg#frag').joinpath('сюди')
+      >>> url
+      URL('http://example.com/path/%D1%81%D1%8E%D0%B4%D0%B8')
+      >>> url = URL('http://example.com/path').joinpath('%D1%81%D1%8E%D0%B4%D0%B8', encoded=True)
+      >>> url
+      URL('http://example.com/path/%D1%81%D1%8E%D0%B4%D0%B8')
+
+   .. versionadded:: 1.9
+
+.. method:: URL.__truediv__(url)
+
+   Shortcut for :meth:`URL.joinpath` with a single element and ``encoded=False``.
+
+   .. doctest::
+
+      >>> url = URL('http://example.com/path?arg#frag') / 'to'
+      >>> url
+      URL('http://example.com/path/to')
+      >>> url.parts
+      ('/', 'path', 'to')
+
+   .. versionadded:: 0.9
 
 .. method:: URL.join(url)
 
@@ -906,36 +1078,47 @@ Default port substitution
 Cache control
 -------------
 
-IDNA conversion used for host encoding is quite expensive operation, that's why the
-``yarl`` library caches IDNA encoding/decoding calls by storing last ``256`` encodes
-and last ``256`` decodes in the global LRU cache.
+IDNA conversion and host encoding are quite expensive operations,
+that's why the ``yarl`` library caches these calls by storing results in the
+global LRU cache.
 
 .. function:: cache_clear()
 
-   Clear IDNA caches.
+   Clear IDNA and host encoding cache.
 
 
 .. function:: cache_info()
 
-   Return a dictionary with ``"idna_encode"`` and ``"idna_decode"`` keys, each value
-   points to corresponding ``CacheInfo`` structure (see :func:`functools.lru_cache` for
-   details):
+   Return a dictionary with ``"idna_encode"``, ``"idna_decode"``, and
+   ``"encode_host"`` keys, each value points to corresponding ``CacheInfo``
+   structure (see :func:`functools.lru_cache` for details):
 
    .. doctest::
       :options: +SKIP
 
       >>> yarl.cache_info()
       {'idna_encode': CacheInfo(hits=5, misses=5, maxsize=256, currsize=5),
-       'idna_decode': CacheInfo(hits=24, misses=15, maxsize=256, currsize=15)}
+       'idna_decode': CacheInfo(hits=24, misses=15, maxsize=256, currsize=15),
+       'encode_host': CacheInfo(hits=0, misses=0, maxsize=512, currsize=0)}
 
+   .. versionchanged:: 1.16
 
-.. function:: cache_configure(*, idna_encode_size=256, idna_decode_size=256)
+      ``ip_address``, and ``host_validate`` are deprecated
+      in favor of a single ``encode_host`` cache.
 
-   Set IDNA encode and decode cache sizes (``256`` for each by default).
+.. function:: cache_configure(*, idna_encode_size=256, idna_decode_size=256, encode_host_size=512)
 
-   Pass ``None`` to make the corresponding cache unbounded (may speed up the IDNA
-   encoding/decoding operation a little but the memory footprint can be very high,
+   Set the IDNA encode, IDNA decode, and host encode
+   cache sizes.
+
+   Pass ``None`` to make the corresponding cache unbounded (may speed up host encoding
+   operation a little but the memory footprint can be very high,
    please use with caution).
+
+   .. versionchanged:: 1.16
+
+      ``ip_address_size`` and ``host_validate_size``
+      are deprecated in favor of a single ``encode_host`` cache.
 
 References
 ----------

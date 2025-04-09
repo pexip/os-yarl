@@ -4,20 +4,28 @@ Priority: optional
 Maintainer: Piotr Ożarowski <piotr@debian.org>
 Uploaders: Debian Python Team <team+python@tracker.debian.org>
 Build-Depends: debhelper-compat (= 13), dh-python,
+               pybuild-plugin-pyproject,
                cython3,
                python3-all-dev,
                python3-setuptools,
-               python3-sphinx,
                python3-idna,
                python3-multidict,
+               python3-propcache,
+# used to build documentation
+               python3-sphinx,
+               python3-myst-parser,
+               python3-alabaster,
+# used during tests:
+               python3-hypothesis <!nocheck>,
                python3-pytest <!nocheck>,
                python3-pytest-runner <!nocheck>,
                python3-pytest-cov <!nocheck>,
-Standards-Version: 4.6.1
+               python3-pytest-xdist <!nocheck>,
+Standards-Version: 4.7.2
 Homepage: https://github.com/aio-libs/yarl/
 Vcs-Git: https://salsa.debian.org/python-team/packages/yarl.git
 Vcs-Browser: https://salsa.debian.org/python-team/packages/yarl
-Testsuite: autopkgtest-pkg-python
+Testsuite: autopkgtest-pkg-pybuild
 
 Package: python3-yarl
 Architecture: any

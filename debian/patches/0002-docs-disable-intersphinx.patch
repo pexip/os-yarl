@@ -7,13 +7,13 @@ Subject: docs: disable intersphinx
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/docs/conf.py b/docs/conf.py
-index 64d98e2..d7154ce 100644
+index c6f9077..f8947fe 100644
 --- a/docs/conf.py
 +++ b/docs/conf.py
-@@ -51,7 +51,7 @@ with _version_path.open() as fp:
- # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
- # ones.
+@@ -63,7 +63,7 @@ with _version_path.open() as fp:
  extensions = [
+     # stdlib-party extensions:
+     "sphinx.ext.extlinks",
 -    "sphinx.ext.intersphinx",
 +    # "sphinx.ext.intersphinx",
      "sphinx.ext.coverage",

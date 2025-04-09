@@ -1,0 +1,27 @@
+From: Martijn Pieters <mj@zopatista.com>
+Date: Tue, 6 Jun 2023 17:38:47 +0100
+Subject: [PATCH] Correct square bracket handling in URL netloc
+
+- The human representation of usernames and passwords should percent-
+  encode square brackets.
+- Clean up the test suite to remove tests that use invalid hostnames
+  (square brackets in a host name must only be used for IPv6 addresses).
+- Rename the remaining test using IPvFuture address syntax to make this
+  explicit.
+- Drop a test for IPv6 addresses with a zone id; zone id support is
+  controversial and expilictly excluded from the WHATWG URL standard.
+  Zone ids *without percent characters in their name* continue to work
+  as long as urllib.parse.urlsplit() accepts them but this is not
+  something that yarl.URL() needs to support explicitly.
+---
+ CHANGES/876.bugfix.rst | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 CHANGES/876.bugfix.rst
+
+diff --git a/CHANGES/876.bugfix.rst b/CHANGES/876.bugfix.rst
+new file mode 100644
+index 0000000..ef62c7e
+--- /dev/null
++++ b/CHANGES/876.bugfix.rst
+@@ -0,0 +1 @@
++Fixed the human representation of URLs with square brackets in usernames and passwords.
