@@ -19,7 +19,7 @@ Homepage: https://github.com/aio-libs/yarl/
 Vcs-Git: https://salsa.debian.org/python-team/packages/yarl.git
 Vcs-Browser: https://salsa.debian.org/python-team/packages/yarl
 Testsuite: autopkgtest-pkg-python
-XS-Pexip-Upstream: http://ftp.debian.org/debian/ bookworm
+XS-Pexip-Upstream: http://deb.debian.org/debian/ trixie
 
 Package: python3-yarl
 Architecture: any
