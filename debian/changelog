@@ -1,3 +1,63 @@
+yarl (1.19.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Piotr Ożarowski <piotr@debian.org>  Wed, 09 Apr 2025 10:22:58 +0200
+
+yarl (1.18.3-1) unstable; urgency=medium
+
+  * Team upload.
+  * New upstream release.
+  * Refresh patches.
+  * Upstream has added dependencies on propcache and hypothesis.
+  * Update Standards-Version.
+  * Add more detail to debian/copyright.
+  * Install NOTICE file in package as required by Apache 2 license.
+
+ -- Edward Betts <edward@4angle.com>  Wed, 19 Mar 2025 12:47:03 +0000
+
+yarl (1.13.1-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Piotr Ożarowski <piotr@debian.org>  Tue, 01 Oct 2024 16:10:29 +0200
+
+yarl (1.13.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Piotr Ożarowski <piotr@debian.org>  Fri, 27 Sep 2024 15:40:07 +0200
+
+yarl (1.9.4-1) unstable; urgency=medium
+
+  * New upstream release
+  * Drop no longer needed patches
+  * Add pybuild-plugin-pyproject to Build-Depends (setup.py replaced with
+    pyproject.toml)
+  * Add python3-pytest-xdist to Build-Depends (used during tests)
+  * Drop towncrier changelog generation as sphinxcontrib.towncrier.ext is not
+    packaged yet
+  * Add python3-myst-parser and python3-alabaster to Build-Depends
+    (used while building docs)
+  * Add 0006-use-os.path.expandvars-instead-of-external-one patch
+
+ -- Piotr Ożarowski <piotr@debian.org>  Thu, 18 Apr 2024 10:56:28 +0200
+
+yarl (1.8.2-3) unstable; urgency=medium
+
+  * Team upload.
+  * d/control: re-run the packages in the autopkgtest using pybuild 
+
+ -- Michael R. Crusoe <crusoe@debian.org>  Wed, 27 Sep 2023 17:08:10 +0200
+
+yarl (1.8.2-2) unstable; urgency=medium
+
+  * Team upload.
+  * d/patches/square_bracket_handling.patch: cherry-picked from upstream.
+    Fixes FTBFS. Closes: #1042342
+
+ -- Michael R. Crusoe <crusoe@debian.org>  Tue, 26 Sep 2023 14:35:07 +0200
+
 yarl (1.8.2-1+pexip24u1) pexip; urgency=medium
 
   * New upstream release

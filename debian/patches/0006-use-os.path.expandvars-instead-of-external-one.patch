@@ -1,0 +1,35 @@
+From: =?utf-8?q?Piotr_O=C5=BCarowski?= <piotr@debian.org>
+Date: Thu, 18 Apr 2024 12:04:06 +0200
+Subject: use os.path.expandvars instead of external one
+
+---
+ packaging/pep517_backend/_cython_configuration.py | 2 +-
+ pyproject.toml                                    | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/packaging/pep517_backend/_cython_configuration.py b/packaging/pep517_backend/_cython_configuration.py
+index e57bfdf..85966a4 100644
+--- a/packaging/pep517_backend/_cython_configuration.py
++++ b/packaging/pep517_backend/_cython_configuration.py
+@@ -9,7 +9,7 @@ from pathlib import Path
+ from sys import version_info as _python_version_tuple
+ from typing import TypedDict
+ 
+-from expandvars import expandvars
++from os.path import expandvars
+ 
+ from ._compat import load_toml_from_string
+ from ._transformers import get_cli_kwargs_from_config, get_enabled_cli_flags_from_config
+diff --git a/pyproject.toml b/pyproject.toml
+index 81900af..ddd0aff 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -3,7 +3,7 @@ requires = [
+   # NOTE: The following build dependencies are necessary for initial
+   # NOTE: provisioning of the in-tree build backend located under
+   # NOTE: `packaging/pep517_backend/`.
+-  "expandvars",
++  #"expandvars",
+   "setuptools >= 47",  # Minimum required for `version = attr:`
+   "tomli; python_version < '3.11'",
+ ]

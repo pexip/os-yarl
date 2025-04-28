@@ -1,0 +1,22 @@
+From: =?utf-8?q?Piotr_O=C5=BCarowski?= <piotr@debian.org>
+Date: Thu, 18 Apr 2024 11:46:04 +0200
+Subject: drop towncrier changelog generation for now
+
+sphinxcontrib.towncrier.ext is not yet packaged in Debian
+---
+ docs/conf.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/docs/conf.py b/docs/conf.py
+index 55f9df0..44a566d 100644
+--- a/docs/conf.py
++++ b/docs/conf.py
+@@ -69,7 +69,7 @@ extensions = [
+     "sphinx.ext.viewcode",
+     # Third-party extensions:
+     "alabaster",
+-    "sphinxcontrib.towncrier.ext",  # provides `towncrier-draft-entries` directive
++    #"sphinxcontrib.towncrier.ext",  # provides `towncrier-draft-entries` directive
+     "myst_parser",  # extended markdown; https://pypi.org/project/myst-parser/
+ ]
+ 
